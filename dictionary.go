@@ -9,8 +9,13 @@ import (
 	"time"
 )
 
+// Dictionary main interface
 type Dictionary interface {
+
+	// GetRandomWord returns a random word
 	GetRandomWord() string
+
+	// GetRandomWords returns a slice of n random words
 	GetRandomWords(n int) []string
 }
 
@@ -19,9 +24,11 @@ type dictionaryImpl struct {
 }
 
 var (
+	// ErrDictionaryLoadFailure is returned when dictionary file load fails
 	ErrDictionaryLoadFailure = errors.New("Failed to load dictionary")
 )
 
+// NewDictionary initializes a new Dictionary
 func NewDictionary() (Dictionary, error) {
 	f, e := os.Open("palabras.txt")
 	var words []string

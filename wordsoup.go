@@ -7,48 +7,60 @@ import (
 	"strings"
 )
 
+// Orientation enumeration
 type Orientation int
 
 var (
-	ErrFailedToAddWord   = errors.New("Could not add word to soup")
+	// ErrFailedToAddWord returned when AddWord fails
+	ErrFailedToAddWord = errors.New("Could not add word to soup")
+
+	//ErrGenerationFailure returned when puzzle generation fails
 	ErrGenerationFailure = errors.New("Failed to generate wordsoup")
 )
 
 const (
+	// Horizontal value
 	Horizontal Orientation = iota
+	// Vertical value
 	Vertical
+	// AddRetries number of retries when AddWord fails
 	AddRetries int = 10
+	// PositionRetries retries when searching for word position
+	PositionRetries int = 1000
 )
 
 var letters = []rune("ABCDEFGHIJKLMNOPQRSTUVWXYZ")
 
+// Position structure
 type Position struct {
 	X, Y int
 }
 
+// Word structure, contains letters, position and orientation
 type Word struct {
 	Letters     string
 	Orientation Orientation
 	Pos         Position
 }
 
+// WordSoup puzzle structure, do not add words manually
 type WordSoup struct {
 	W, H  int
 	Words []Word
 }
 
+// Cell puzzle cell abstraction
 type Cell struct {
 	Position
 	Letter rune
 }
 
-// func RandomPos(maxX, maxY int) Position {
-// 	rand.New
-// }
+// Equals compares positions
 func (p Position) Equals(other Position) bool {
 	return p.X == other.X && p.Y == other.Y
 }
 
+// Cells returns slice of Cells occupied by the word
 func (w Word) Cells() []Cell {
 	var res []Cell
 	for i, l := range w.Letters {
@@ -63,8 +75,8 @@ func (w Word) Cells() []Cell {
 	return res
 }
 
+// Conflicts returns true if if words overlap
 func (w Word) Conflicts(other Word) bool {
-
 	cells := w.Cells()
 	for _, othersCell := range other.Cells() {
 		for _, myCell := range cells {
@@ -76,6 +88,7 @@ func (w Word) Conflicts(other Word) bool {
 	return false
 }
 
+// Fits returns true if all word Cells are contained inside the puzzle boundaries
 func (s *WordSoup) Fits(w Word) bool {
 	if w.Orientation == Vertical {
 		if w.Pos.Y+len(w.Letters) > s.H {
@@ -88,6 +101,8 @@ func (s *WordSoup) Fits(w Word) bool {
 	}
 	return true
 }
+
+// Conflicts returns true if w conflicts with any of the existing puzzle words
 func (s *WordSoup) Conflicts(w Word) bool {
 	for _, myWord := range s.Words {
 		if myWord.Conflicts(w) {
@@ -96,12 +111,13 @@ func (s *WordSoup) Conflicts(w Word) bool {
 	}
 	return false
 }
+
+// TryToAddWord searches eagerly for a fitting and non conflicting position inside the puzzle
 func (s *WordSoup) TryToAddWord(word string) error {
 	if len(word) > s.H && len(word) > s.W {
 		return ErrFailedToAddWord
 	}
-	for try := 0; try < 10000; try++ {
-
+	for try := 0; try < PositionRetries; try++ {
 		p := Position{rand.Intn(s.W), rand.Intn(s.H)}
 		orient := Vertical
 		if rand.Int()%2 == 0 {
@@ -118,7 +134,6 @@ func (s *WordSoup) TryToAddWord(word string) error {
 
 func (s *WordSoup) render() map[int]rune {
 	res := make(map[int]rune)
-
 	for _, w := range s.Words {
 		for _, c := range w.Cells() {
 			res[c.Y*s.W+c.X] = c.Letter
@@ -126,9 +141,7 @@ func (s *WordSoup) render() map[int]rune {
 	}
 	for i := 0; i < s.W*s.H; i++ {
 		if _, occupied := res[i]; !occupied {
-			// var r rune
 			res[i] = letters[rand.Intn(len(letters))]
-
 		}
 	}
 	return res
@@ -146,6 +159,8 @@ func (s *WordSoup) String() string {
 	return res
 }
 
+// GenerateRandomWordSoup generates a puzzle with specified dimensions and number of random words
+// fetched from the provided Dictionary
 func GenerateRandomWordSoup(height, width, nWords int, dict Dictionary) (*WordSoup, error) {
 	if height < 1 || width < 1 {
 		return nil, ErrGenerationFailure
