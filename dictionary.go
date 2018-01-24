@@ -50,6 +50,28 @@ func NewDictionary() (Dictionary, error) {
 	return &dictionaryImpl{words: words}, nil
 }
 
+// NewDictionaryFromTextFile initializes a new Dictionary from a text file
+func NewDictionaryFromTextFile(path string) (Dictionary, error) {
+	f, e := os.Open(path)
+	var words []string
+	if e != nil {
+		return nil, ErrDictionaryLoadFailure
+	}
+	defer f.Close()
+	reader := bufio.NewReader(f)
+	for {
+		if s, e := reader.ReadString('\n'); e == nil && len(s) > 5 {
+			s = strings.TrimSpace(s)
+			s = strings.ToUpper(s)
+			words = append(words, s)
+		} else if e != nil {
+			break
+		}
+	}
+	rand.Seed(time.Now().UnixNano())
+	return &dictionaryImpl{words: words}, nil
+}
+
 func (d *dictionaryImpl) GetRandomWord() string {
 
 	return d.words[rand.Intn(len(d.words))]

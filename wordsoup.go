@@ -33,26 +33,28 @@ var letters = []rune("ABCDEFGHIJKLMNOPQRSTUVWXYZ")
 
 // Position structure
 type Position struct {
-	X, Y int
+	X int `json:"x,omitempty"`
+	Y int `json:"y,omitempty"`
 }
 
 // Word structure, contains letters, position and orientation
 type Word struct {
-	Letters     string
-	Orientation Orientation
-	Pos         Position
+	Letters     string      `json:"letters,omitempty"`
+	Orientation Orientation `json:"orientation,omitempty"`
+	Pos         Position    `json:"pos,omitempty"`
 }
 
 // WordSoup puzzle structure, do not add words manually
 type WordSoup struct {
-	W, H  int
-	Words []Word
+	W     int    `json:"width,omitempty"`
+	H     int    `json:"height,omitempty"`
+	Words []Word `json:"words,omitempty"`
 }
 
 // Cell puzzle cell abstraction
 type Cell struct {
 	Position
-	Letter rune
+	Letter rune `json:"letter,omitempty"`
 }
 
 // Equals compares positions
