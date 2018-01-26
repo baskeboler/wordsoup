@@ -36,3 +36,23 @@ func TestRandomWS(t *testing.T) {
 	t.Log(ws)
 	t.Log(ws.Words)
 }
+func TestAddWordsFailure(t *testing.T) {
+	s := &wordsoup.WordSoup{W: 10, H: 10}
+	word := "Supercalifragilisticexpialidocious"
+	err := s.TryToAddWord(word)
+	if err != wordsoup.ErrFailedToAddWord {
+		t.Fail()
+	}
+}
+
+func TestAddTooManyWordFailure(t *testing.T) {
+	dict, err := wordsoup.NewDictionary()
+	if err != nil {
+		t.Error(err)
+		return
+	}
+	_, err = wordsoup.GenerateRandomWordSoup(20, 20, 300, dict)
+	if err != wordsoup.ErrGenerationFailure {
+		t.Fail()
+	}
+}
