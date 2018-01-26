@@ -1,13 +1,11 @@
-package wordsoup_test
+package wordsoup
 
 import (
 	"testing"
-
-	"github.com/baskeboler/wordsoup"
 )
 
 func TestDictionary(t *testing.T) {
-	d, err := wordsoup.NewDictionary()
+	d, err := NewDictionary()
 	if err != nil {
 		t.Error(err)
 	}
@@ -19,7 +17,7 @@ func TestDictionary(t *testing.T) {
 }
 
 func TestGetWords(t *testing.T) {
-	d, err := wordsoup.NewDictionary()
+	d, err := NewDictionary()
 	if err != nil {
 		t.Error(err)
 	}
@@ -30,7 +28,7 @@ func TestGetWords(t *testing.T) {
 	}
 }
 func TestLoadFromURL(t *testing.T) {
-	d, err := wordsoup.NewDictionaryFromURL("https://rawgit.com/baskeboler/wordsoup/master/palabras.txt")
+	d, err := NewDictionaryFromURL("https://rawgit.com/baskeboler/wordsoup/master/palabras.txt")
 	if err != nil {
 		t.Error(err)
 	}
@@ -40,13 +38,13 @@ func TestLoadFromURL(t *testing.T) {
 	}
 }
 func TestLoadFromURLFailure(t *testing.T) {
-	_, err := wordsoup.NewDictionaryFromURL("https://rawgit.com/baskeboler/wordsoup/master/palabrasNON-EXISTENT.txt")
-	if err != wordsoup.ErrDictionaryLoadFailure {
+	_, err := NewDictionaryFromURL("https://rawgit.com/baskeboler/wordsoup/master/palabrasNON-EXISTENT.txt")
+	if err != ErrDictionaryLoadFailure {
 		t.Fail()
 	}
 }
 func TestDefaultLoad(t *testing.T) {
-	d, err := wordsoup.NewDictionary()
+	d, err := NewDictionary()
 	if err != nil {
 		t.Error(err)
 	}
