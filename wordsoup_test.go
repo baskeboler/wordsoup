@@ -55,4 +55,8 @@ func TestAddTooManyWordFailure(t *testing.T) {
 	if err != wordsoup.ErrGenerationFailure {
 		t.Fail()
 	}
+	_, err = wordsoup.GenerateRandomWordSoup(0, 20, 2, dict)
+	if err != wordsoup.ErrGenerationFailure {
+		t.Fail()
+	}
 }
