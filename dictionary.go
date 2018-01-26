@@ -3,7 +3,9 @@ package wordsoup
 import (
 	"bufio"
 	"errors"
+	"io"
 	"math/rand"
+	"net/http"
 	"os"
 	"strings"
 	"time"
@@ -28,26 +30,11 @@ var (
 	ErrDictionaryLoadFailure = errors.New("Failed to load dictionary")
 )
 
+const DefaultDictURL = "https://rawgit.com/baskeboler/wordsoup/master/palabras.txt"
+
 // NewDictionary initializes a new Dictionary
 func NewDictionary() (Dictionary, error) {
-	f, e := os.Open("palabras.txt")
-	var words []string
-	if e != nil {
-		return nil, ErrDictionaryLoadFailure
-	}
-	defer f.Close()
-	reader := bufio.NewReader(f)
-	for {
-		if s, e := reader.ReadString('\n'); e == nil && len(s) > 5 {
-			s = strings.TrimSpace(s)
-			s = strings.ToUpper(s)
-			words = append(words, s)
-		} else if e != nil {
-			break
-		}
-	}
-	rand.Seed(time.Now().UnixNano())
-	return &dictionaryImpl{words: words}, nil
+	return NewDictionaryFromURL(DefaultDictURL)
 }
 
 // NewDictionaryFromTextFile initializes a new Dictionary from a text file
@@ -58,7 +45,15 @@ func NewDictionaryFromTextFile(path string) (Dictionary, error) {
 		return nil, ErrDictionaryLoadFailure
 	}
 	defer f.Close()
-	reader := bufio.NewReader(f)
+	words = readWords(f)
+	rand.Seed(time.Now().UnixNano())
+	return &dictionaryImpl{words: words}, nil
+}
+
+func readWords(r io.Reader) []string {
+	var words []string
+
+	reader := bufio.NewReader(r)
 	for {
 		if s, e := reader.ReadString('\n'); e == nil && len(s) > 5 {
 			s = strings.TrimSpace(s)
@@ -68,6 +63,18 @@ func NewDictionaryFromTextFile(path string) (Dictionary, error) {
 			break
 		}
 	}
+	return words
+}
+
+func NewDictionaryFromURL(url string) (Dictionary, error) {
+	var words []string
+	res, err := http.Get(url)
+	if err != nil {
+		return nil, err
+	}
+	body := res.Body
+	defer body.Close()
+	words = readWords(body)
 	rand.Seed(time.Now().UnixNano())
 	return &dictionaryImpl{words: words}, nil
 }

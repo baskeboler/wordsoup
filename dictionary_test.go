@@ -29,3 +29,24 @@ func TestGetWords(t *testing.T) {
 		t.Fail()
 	}
 }
+func TestLoadFromURL(t *testing.T) {
+	d, err := wordsoup.NewDictionaryFromURL("https://rawgit.com/baskeboler/wordsoup/master/palabras.txt")
+	if err != nil {
+		t.Error(err)
+	}
+	w := d.GetRandomWord()
+	if len(w) <= 0 {
+		t.Fail()
+	}
+}
+
+func TestDefaultLoad(t *testing.T) {
+	d, err := wordsoup.NewDictionary()
+	if err != nil {
+		t.Error(err)
+	}
+	w := d.GetRandomWord()
+	if len(w) <= 0 {
+		t.Fail()
+	}
+}
