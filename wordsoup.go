@@ -29,7 +29,7 @@ const (
 	PositionRetries int = 1000
 )
 
-var letters = []rune("ABCDEFGHIJKLMNOPQRSTUVWXYZ")
+var letters = []rune("ABCDEFGHIJKLMNÑOPQRSTUVWXYZ")
 
 // Position structure
 type Position struct {

@@ -705,7 +705,7 @@ isla
 planeta
 parar
 energía
- después
+después
 terrible
 río
 servir
@@ -1041,7 +1041,7 @@ inspector
 total
 lengua
 modelo
-EE.UU.
+EEUU
 huevo
 cocina
 asegurar
@@ -2318,7 +2318,6 @@ síndrome
 Rusia
 refugio
 rápidamente
-gral.
 gesto
 garantizar
 arrestado
@@ -3487,7 +3486,6 @@ admirador
 saludable
 rival
 respiro
-por favor
 plasma
 otoño
 novia
@@ -4931,7 +4929,6 @@ exagerar
 estebar
 espectacular
 dramático
-dpto.
 detectado
 coñac
 comprometido
@@ -4949,7 +4946,6 @@ visitado
 usual
 taberna
 surgido
-sres.
 santificado
 remover
 recordado
@@ -6118,7 +6114,6 @@ inclinar
 hobby
 hidrógeno
 forjado
-etc.
 estatus
 establecimiento
 especia
@@ -6255,7 +6250,6 @@ mojar
 moción
 Mississippi
 meteoro
-may day
 mango
 liderar
 libremente
@@ -6632,7 +6626,6 @@ bromista
 Brighton
 balsa
 aviación
-avda.
 aterrizado
 astronave
 astilla
@@ -7396,7 +7389,6 @@ morado
 metedle
 mermelada
 mención
-mâs
 marcharé
 manojo
 manejaré
@@ -7460,7 +7452,6 @@ estubo
 estímulo
 estatales
 estándares
-estâ
 esquí
 esperarás
 escoltas
@@ -7870,7 +7861,6 @@ acorazado
 accesorios
 aburres
 abrazando
-+
 zoom
 zar
 wimbledon
@@ -8843,7 +8833,6 @@ abundancia
 abundan
 abrazó
 abatido
-==
 zafó
 windsor
 versiones
@@ -10222,7 +10211,6 @@ incluyéndote
 impresion
 impedirá
 ignoro
-/i
 hueca
 historietas
 hipnosis
@@ -10454,7 +10442,6 @@ acampamos
 abrirás
 abrelatas
 abandonaremos
-¶¶
 zombies
 yerba
 viviéramos
@@ -10882,7 +10869,6 @@ asombró
 asoma
 asegurada
 aseguraba
-asã­
 arrugas
 arrojando
 arreglaría

@@ -30,6 +30,14 @@ var (
 	ErrDictionaryLoadFailure = errors.New("Failed to load dictionary")
 )
 
+var charReplacements = map[string]string{
+	"Á": "A",
+	"É": "E",
+	"Í": "I",
+	"Ó": "O",
+	"Ú": "U",
+}
+
 // DefaultDictURL points to URL of palabras.txt in github repository
 const DefaultDictURL = "https://rawgit.com/baskeboler/wordsoup/master/palabras.txt"
 
@@ -59,6 +67,9 @@ func readWords(r io.Reader) []string {
 		if s, e := reader.ReadString('\n'); e == nil && len(s) > 5 {
 			s = strings.TrimSpace(s)
 			s = strings.ToUpper(s)
+			for invalid, replacement := range charReplacements {
+				s = strings.Replace(s, invalid, replacement, len(s))
+			}
 			words = append(words, s)
 		} else if e != nil {
 			break
