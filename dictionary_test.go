@@ -39,7 +39,12 @@ func TestLoadFromURL(t *testing.T) {
 		t.Fail()
 	}
 }
-
+func TestLoadFromURLFailure(t *testing.T) {
+	_, err := wordsoup.NewDictionaryFromURL("https://rawgit.com/baskeboler/wordsoup/master/palabrasNON-EXISTENT.txt")
+	if err != wordsoup.ErrDictionaryLoadFailure {
+		t.Fail()
+	}
+}
 func TestDefaultLoad(t *testing.T) {
 	d, err := wordsoup.NewDictionary()
 	if err != nil {

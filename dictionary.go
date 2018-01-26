@@ -30,6 +30,7 @@ var (
 	ErrDictionaryLoadFailure = errors.New("Failed to load dictionary")
 )
 
+// DefaultDictURL points to URL of palabras.txt in github repository
 const DefaultDictURL = "https://rawgit.com/baskeboler/wordsoup/master/palabras.txt"
 
 // NewDictionary initializes a new Dictionary
@@ -66,11 +67,16 @@ func readWords(r io.Reader) []string {
 	return words
 }
 
+// NewDictionaryFromURL loads dictionary from file specified by URL
 func NewDictionaryFromURL(url string) (Dictionary, error) {
 	var words []string
 	res, err := http.Get(url)
 	if err != nil {
-		return nil, err
+		return nil, ErrDictionaryLoadFailure
+	}
+	// if file not found
+	if res.StatusCode == 404 {
+		return nil, ErrDictionaryLoadFailure
 	}
 	body := res.Body
 	defer body.Close()
